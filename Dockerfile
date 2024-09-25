@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.10
 
 # Prerequisites
 RUN apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-17-jdk wget
@@ -19,14 +19,14 @@ ARG ANDROID_SDK_VERSION=11076708
 RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools && \
     wget -q https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_SDK_VERSION}_latest.zip && \
     unzip *tools*linux*.zip -d ${ANDROID_SDK_ROOT}/cmdline-tools && \
-    mv ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/tools && \
+    mv ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest && \
     rm *tools*linux*.zip
 
-RUN cd ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin && yes | ./sdkmanager --licenses
-RUN cd ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin && ./sdkmanager "build-tools;34.0.0" "platform-tools" "platforms;android-34" "sources;android-34"
-ENV PATH "$PATH:/home/developer/Android/sdk/platform-tools"
+RUN cd ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin && yes | ./sdkmanager --licenses
+RUN cd ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin && ./sdkmanager "build-tools;34.0.0" "platform-tools" "platforms;android-34" "sources;android-34"
 
-ENV PATH "$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin"
+ENV PATH "$PATH:/home/developer/Android/sdk/platform-tools"
+ENV PATH "$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin"
 
 ENV FLUTTER_VERSION='3.22.2'
 
